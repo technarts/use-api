@@ -1,0 +1,33 @@
+{
+  "name": "@technarts/use-api",
+  "version": "1.0.22",
+  "description": "Hook for sending HTTP request in easy way.",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "scripts": {
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\""
+  },
+  "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
+  "author": "technarts",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": ">=16"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "react",
+    "typescript",
+    "use-api",
+    "fetch"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
