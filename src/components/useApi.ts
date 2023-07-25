@@ -28,7 +28,7 @@ function useApi<T>(params: Params) {
     const _url = callParams?.url || params.url
     const _method =  params.method
     const _headers = callParams?.headers || params.headers
-    const _body = params?.payload ? JSON.stringify(params.payload) : undefined
+    const _body = callParams?.payload ? JSON.stringify(callParams.payload) : undefined
 
     const options = {
       method: _method === "DOWNLOAD" ? "GET" : _method,
