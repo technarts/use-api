@@ -1,6 +1,6 @@
 {
   "name": "@technarts/use-api",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "Hook for sending HTTP request in easy way.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
