@@ -39,16 +39,19 @@ function useApi<T>(params: Params) {
     try {
       const response = await fetch(_url, options)
         .then(r => params.responseGuard?.(r) || r)
-        .then(r => params.method === "DOWNLOAD" ? r.blob() : r.json());
+        .then(r => ({
+          ok: r.ok,
+          data: params.method === "DOWNLOAD" ? r.blob() : r.json()
+        }));
 
-      if (response) {
+      if (response.ok) {
         setError(null);
         setFault(null);
-        setResp(await response)
+        setResp(await response.data)
       } else {
         setResp(null);
         setFault(null);
-        setError(await response)
+        setError(await response.data)
       }
     } catch (e: any) {
       setResp(null);
