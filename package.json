@@ -1,6 +1,6 @@
 {
   "name": "@technarts/use-api",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "Hook for sending HTTP request in easy way.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -29,5 +29,9 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.17",
+    "tslib": "^2.6.1"
   }
 }
