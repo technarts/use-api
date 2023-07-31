@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ApiCounsel } from "./utils/types";
+import { ApiCounsel } from "./types";
 
 type ReporterArgs<T> = {
   apiCounsel: ApiCounsel<T>,
@@ -12,16 +12,15 @@ type ReporterArgs<T> = {
   ) => void,
 }
 
-
 export default function useApiReporter<T>(args: ReporterArgs<T>) {
   const [isStarted, setStarted] = React.useState(false);
 
   React.useEffect(() => {
     if (args.apiCounsel.inFlight) {
-      args?.start?.();
+      args.start?.();
       setStarted(true);
     } else if (isStarted && !args.apiCounsel.inFlight) {
-      args?.end?.(
+      args.end?.(
         args.apiCounsel.RESP,
         args.apiCounsel.error,
         args.apiCounsel.fault

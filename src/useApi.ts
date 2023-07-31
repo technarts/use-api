@@ -4,10 +4,10 @@ import {
   ApiCounsel,
   Params,
   CallParams
-} from "./utils/types";
+} from "./types";
 
-function useApi<T>(params: Params) {
-  const [url,] = React.useState<String>(params.url)
+export default function useApi<T>(params: Params) {
+  const [url,] = React.useState<string>(params.url)
 
   // Data after a successful fetch operation:
   const [RESP, setResp] = React.useState<T | null>(null);
@@ -26,12 +26,11 @@ function useApi<T>(params: Params) {
     setInFlight(true);
 
     const _url = callParams?.url || params.url
-    const _method =  params.method
     const _headers = callParams?.headers || params.headers
     const _body = callParams?.payload ? JSON.stringify(callParams.payload) : undefined
 
     const options = {
-      method: _method === "DOWNLOAD" ? "GET" : _method,
+      method: params.method === "DOWNLOAD" ? "GET" : params.method,
       headers: _headers,
       body: _body,
     } as RequestInit
@@ -71,5 +70,3 @@ function useApi<T>(params: Params) {
     call,
   } as ApiCounsel<T>;
 }
-
-export default useApi;
