@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { ApiCounsel } from "./types";
 
-type ReporterArgs<T> = {
+type Params<T> = {
   apiCounsel: ApiCounsel<T>,
   start?: () => void,
   end?: (
@@ -12,20 +12,20 @@ type ReporterArgs<T> = {
   ) => void,
 }
 
-export default function useApiReporter<T>(args: ReporterArgs<T>) {
+export default function useApiReporter<T>(params: Params<T>) {
   const [isStarted, setStarted] = React.useState(false);
 
   React.useEffect(() => {
-    if (args.apiCounsel.inFlight) {
-      args.start?.();
+    if (params.apiCounsel.inFlight) {
+      params.start?.();
       setStarted(true);
-    } else if (isStarted && !args.apiCounsel.inFlight) {
-      args.end?.(
-        args.apiCounsel.RESP,
-        args.apiCounsel.error,
-        args.apiCounsel.fault
+    } else if (isStarted && !params.apiCounsel.inFlight) {
+      params.end?.(
+        params.apiCounsel.RESP,
+        params.apiCounsel.error,
+        params.apiCounsel.fault
       );
       setStarted(false);
     }
-  }, [args.apiCounsel.inFlight, isStarted])
+  }, [params.apiCounsel.inFlight, isStarted])
 }
