@@ -37,7 +37,7 @@ export default function useApi<T>(params: Params) {
 
     try {
       const response = await fetch(_url, options)
-        .then(r => params.responseGuard?.(r, callParams) || r)
+        .then(r => params.responseGuard?.(r, {url:_url, headers:_headers, payload: callParams?.payload}) || Promise.resolve(r))
         .then(r => ({
           ok: r.ok,
           data: params.method === "DOWNLOAD" ? r.blob() : r.json()
