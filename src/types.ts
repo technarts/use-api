@@ -1,15 +1,22 @@
+type Headers = {
+  "Accept"?: string,
+  "Authorization"?: string,
+  "Content-Type"?: string,
+  [k: string]: any
+}
+
 export type Params = {
   url: string,
   method: "POST" | "PUT" | "PATCH" | "DELETE" | "GET" | "DOWNLOAD" | "UPLOAD"
   responseGuard?: (r: Response, params: CallParams) => Promise<Response>;
-  headers?: { [k: string]: any },
+  headers?: Headers,
 }
 
 export type CallParams = {
   url?: string,
   responseGuard?: (r: Response, params: CallParams) => Promise<Response>,
-  headers?: { [k: string]: any },
-  payload?: { [k: string]: any } | string,
+  headers?: Headers,
+  payload?: any,
 }
 
 export type ApiCounsel<T> = {
