@@ -127,7 +127,9 @@ function App() {
       </div>
 
       <div className={"method-section"}>
-        <h3>UPLOAD</h3>
+        <div style={{display: "flex"}}>
+          <h3>UPLOAD</h3><p>*Run browser without CORS protection to work with upload request.</p>
+        </div>
         <input
           ref={adminHelpDocInputRef}
           style={{ display: "none" }}
