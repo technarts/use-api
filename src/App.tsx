@@ -145,20 +145,20 @@ function App() {
           onChange={(e) => setUploadUrl(e.target.value)}
         />
         <button onClick={() => adminHelpDocInputRef.current?.click()}>
-          Seleft File and Send Upload Request
+          Select File and Send Upload Request
         </button>
         <a ref={linkRef} style={{ display: 'none' }}></a>
         <div className={"output-section"}>
           <b>RESP:</b> <br/>
-          <code>{apiDownloader?.RESP ? JSON.stringify(apiDownloader?.RESP) : ''}</code> <br/>
+          <code>{apiUploader?.RESP ? JSON.stringify(apiUploader?.RESP) : ''}</code> <br/>
           <b>error:</b>
-          <code>{apiDownloader?.RESP ? JSON.stringify(apiDownloader?.error) : ''}</code> <br/>
+          <code>{apiUploader?.RESP ? JSON.stringify(apiUploader?.error) : ''}</code> <br/>
           <b>fault:</b>
-          <code>{apiDownloader?.RESP ? JSON.stringify(apiDownloader?.fault) : ''}</code> <br/>
+          <code>{apiUploader?.RESP ? JSON.stringify(apiUploader?.fault) : ''}</code> <br/>
           <b>inFlight:</b>
-          <code>{JSON.stringify(apiDownloader?.inFlight)}</code> <br/>
+          <code>{JSON.stringify(apiUploader?.inFlight)}</code> <br/>
           <b>url:</b>
-          <code>{downloadUrl}</code> <br/>
+          <code>{uploadUrl}</code> <br/>
         </div>
       </div>
     </div>
