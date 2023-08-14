@@ -1,5 +1,5 @@
 {
-  "include": ["src"],
+  "include": ["src/pkg"],
   "exclude": [
     "dist",
     "node_modules"
@@ -21,6 +21,6 @@
     "jsx": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
