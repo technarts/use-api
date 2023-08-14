@@ -25,19 +25,24 @@ export default function useApi<T>(params: Params) {
   const call = async (callParams?: CallParams) => {
     setInFlight(true);
 
-    const _url = callParams?.url || params.url
-    const _headers = callParams?.headers || params.headers
-    const _body = callParams?.payload ? JSON.stringify(callParams.payload) : undefined
+    const _url = callParams?.url || params.url;
+    const _headers = callParams?.headers || params.headers;
+    let _body = callParams?.payload;
+    let _method = params.method;
 
-    const options = {
-      method: params.method === "DOWNLOAD" ? "GET" : params.method,
-      headers: _headers,
-      body: _body,
-    } as RequestInit
+    if (_headers?.["Content-Type"] === "application/json")
+      _body = JSON.stringify(_body);
+
+    if (params.method === "DOWNLOAD")
+      _method = "GET";
+    else if (params.method === "UPLOAD")
+      _method = "POST";
+
+    const options = { method: _method, headers: _headers, body: _body };
 
     try {
       const response = await fetch(_url, options)
-        .then(r => params.responseGuard?.(r, { url:_url, headers:_headers, payload: callParams?.payload }) || Promise.resolve(r))
+        .then(r => params.responseGuard?.(r, { url: _url, headers: _headers, payload: callParams?.payload }) || Promise.resolve(r))
         .then(r => ({
           ok: r.ok,
           data: params.method === "DOWNLOAD" ? r.blob() : r.json()
