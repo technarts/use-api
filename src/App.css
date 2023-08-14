@@ -1,0 +1,16 @@
+
+.method-section {
+    border: 1px solid black;
+    padding: 10px;
+    display: grid;
+}
+
+.output-section {
+    background-color: lightgray;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+input {
+    margin-bottom: 10px;
+}

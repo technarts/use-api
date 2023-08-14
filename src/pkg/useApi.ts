@@ -39,7 +39,7 @@ export default function useApi<T>(params: Params) {
       _method = "POST";
 
     const options = { method: _method, headers: _headers, body: _body };
-    console.log("sadasdfd",options)
+
     try {
       const response = await fetch(_url, options)
         .then(r => params.responseGuard?.(r, { url: _url, headers: _headers, payload: callParams?.payload }) || Promise.resolve(r))
