@@ -27,10 +27,15 @@ export default function useApi<T>(params: Params) {
 
     const _url = callParams?.url || params.url
     const _headers = callParams?.headers || params.headers
-    const _body = callParams?.payload ? JSON.stringify(callParams.payload) : undefined
+    const _body: {[p: string]: any } | any | string = callParams?.payload
+    let _method = params.method
+
+    if(params.method === "UPLOAD") {
+      _method = "POST"
+    }
 
     const options = {
-      method: params.method === "DOWNLOAD" ? "GET" : params.method,
+      method: params.method === "DOWNLOAD" ? "GET" : _method,
       headers: _headers,
       body: _body,
     } as RequestInit
