@@ -9,9 +9,8 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\""
+    "start": "react-scripts start"
   },
-  "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
   "author": "technarts",
   "license": "ISC",
   "peerDependencies": {
@@ -32,6 +31,22 @@
   },
   "devDependencies": {
     "@types/react": "^18.2.17",
-    "tslib": "^2.6.1"
+    "@types/react-dom": "^18.2.7",
+    "tslib": "^2.6.1",
+    "typescript": "^4.9.5",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
