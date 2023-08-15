@@ -1,6 +1,6 @@
 {
   "name": "@technarts/react-use-api",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "React hooks for api call life cycle management.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -13,6 +13,10 @@
   },
   "author": "technarts",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/technarts/react-use-api"
+  },
   "peerDependencies": {
     "react": ">=16"
   },
