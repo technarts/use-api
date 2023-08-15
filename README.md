@@ -13,6 +13,8 @@ $ npm i @technarts/react-use-api
 ## Simple Usage
 
 ```typescript
+import { useApi } from "@technarts/react-use-api";
+
 // Get an ApiCounsel by which you can make calls and manage responses:
 const apiGetter = useApi<{ status: string, data: number[] }>({ url: "your/url/here", method: "GET" });
 
@@ -31,21 +33,29 @@ React.useEffect(() => {
 ## Types
 ### `useApi<T>(params: Params) => ApiCounsel<T>`
 ```typescript
+// Some commonly used headers are explicitly defined:
+type Headers = {
+  "Accept"?: string,
+  "Authorization"?: string,
+  "Content-Type"?: string,
+  [k: string]: any
+}
+
 // Parameters accepted by useApi:
 type Params = {
   url: string,
-  method: "POST" | "PUT" | "PATCH" | "DELETE" | "GET" | "DOWNLOAD"
-  responseGuard?: (r: Response) => Response,
-  headers?: { [k: string]: any },
+  method: "POST" | "PUT" | "PATCH" | "DELETE" | "GET" | "DOWNLOAD" | "UPLOAD"
+  responseGuard?: (r: Response, params: CallParams) => Promise<Response>,
+  headers?: Headers,
 }
 
 // Parameters accepted by the call method of ApiCounsel.
 // Maybe omitted altogether if nothing needs to be overriden:
 type CallParams = {
   url?: string,
-  responseGuard?: (r: Response) => Response,
-  headers?: { [k: string]: any },
-  payload?: { [k: string]: any },
+  responseGuard?: (r: Response, params: CallParams) => Promise<Response>,
+  headers?: Headers,
+  payload?: any,
 }
 
 // The return type of useApi:
@@ -81,16 +91,16 @@ React.useEffect(() => {
 }, [apiCounsel.RESP])
 ```
 
-## `responseGuard: (r: Response) => Response`
+## `responseGuard: (r: Response, params: CallParams) => Promise<Response>`
 
 Response guard welcomes the response. So if every 401 needs to be handled the same way, it can be used as follows:
 
 ```typescript
-function guard(r: Response): Response {
+function guard(r: Response, params: CallParams): Promise<Response> {
   if (r.status === 401) {
     // Handle 401, maybe locate to login?
   }
-  return r
+  return Promise.resolve(r);
 }
 
 // T is set to `any` for keeping examples simple:
@@ -147,7 +157,7 @@ React.useEffect(() => {
 }, [apiCounsel.inFlight])
 ```
 
-Again, `useApiReporter` has a more convenient way of chaining requests one after another.
+Again, `useApiReporter`'s `end` callback can be used for chaining requests one after another.
 
 ## `useApiReporter` Hook
 
@@ -206,8 +216,8 @@ In fact, we tried this approach before. Admission: it was working (with a few fl
 Since one `apiCounsel` is responsible for one type of API call, naming `apiCounsel`s in an informative way helps:
 
 ```typescript
-const apiServiceGetter = useApi<any>({ /* bla bla */ })
-const apiServicePatcher = useApi<any>({ /* bla bla */ })
+const apiServiceGetter = useApi<any>({ url: "...", method: "GET" })
+const apiServicePatcher = useApi<any>({ url: "...", method: "PATCH" })
 ```
 
 So the reader knows when `apiServicePatcher.call()` is issued, it will send a `PATCH` request. But, if there is only one `apiCounsel` in a component, for example a ComboBox needs only one for fetching the records matching the search keywords from the url provided to it, simply naming the `apiCounsel` as `apiGetter` does the job.
