@@ -33,14 +33,12 @@ export default function useApi<T>(params: Params) {
     if (_headers?.["Content-Type"] === "application/json")
       _body = JSON.stringify(_body);
 
-    if (_method === "DOWNLOAD") {
-      if( callParams?.payload)
-        _method = "POST";
-      else
-        _method = "GET"
-    }
-    else if (_method === "UPLOAD")
+    if (_method === "UPLOAD")
       _method = "POST";
+    else if (_method === "DOWNLOAD" && _body)
+      _method = "POST";
+    else if (_method === "DOWNLOAD" && !_body)
+      _method = "GET";
 
     const options = { method: _method, headers: _headers, body: _body };
 
