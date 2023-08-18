@@ -7,8 +7,6 @@ import {
 } from "./types";
 
 export default function useApi<T>(params: Params) {
-  const [url,] = React.useState<string>(params.url)
-
   // Data after a successful fetch operation:
   const [RESP, setResp] = React.useState<T | null>(null);
 
@@ -25,26 +23,26 @@ export default function useApi<T>(params: Params) {
   const call = async (callParams?: CallParams) => {
     setInFlight(true);
 
-    const _url = callParams?.url || params.url;
-    const _headers = callParams?.headers || params.headers;
-    let _body = callParams?.payload;
-    let _method = params.method;
+    const url = callParams?.url || params.url;
+    const headers = callParams?.headers || params.headers;
+    let body = callParams?.payload;
+    let method = params.method;
 
-    if (_headers?.["Content-Type"] === "application/json")
-      _body = JSON.stringify(_body);
+    if (headers?.["Content-Type"] === "application/json")
+      body = JSON.stringify(body);
 
-    if (_method === "UPLOAD")
-      _method = "POST";
-    else if (_method === "DOWNLOAD" && _body)
-      _method = "POST";
-    else if (_method === "DOWNLOAD" && !_body)
-      _method = "GET";
+    if (method === "UPLOAD")
+      method = "POST";
+    else if (method === "DOWNLOAD" && body)
+      method = "POST";
+    else if (method === "DOWNLOAD" && !body)
+      method = "GET";
 
-    const options = { method: _method, headers: _headers, body: _body };
+    const options = { method, headers, body };
 
     try {
-      const response = await fetch(_url, options)
-        .then(r => params.responseGuard?.(r, { url: _url, headers: _headers, payload: callParams?.payload }) || Promise.resolve(r))
+      const response = await fetch(url, options)
+        .then(r => params.responseGuard?.(r, { url, headers, payload: callParams?.payload }) || Promise.resolve(r))
         .then(r => ({
           ok: r.ok,
           data: params.method === "DOWNLOAD" ? r.blob() : r.json()
@@ -73,7 +71,7 @@ export default function useApi<T>(params: Params) {
     inFlight,
     error,
     fault,
-    url,
+    url: params.url,
     call,
   } as ApiCounsel<T>;
 }
