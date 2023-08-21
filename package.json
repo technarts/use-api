@@ -1,10 +1,10 @@
 {
   "name": "@technarts/react-use-api",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "React hooks for api call life cycle management.",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/esm/index.d.ts",
+  "main": "./dist/cjs/pkg/index.js",
+  "module": "./dist/esm/pkg/index.js",
+  "types": "./dist/esm/pkg/index.d.ts",
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
