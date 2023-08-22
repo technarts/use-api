@@ -1,6 +1,6 @@
 {
   "name": "@technarts/react-use-api",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "React hooks for api call life cycle management.",
   "main": "./dist/cjs/pkg/index.js",
   "module": "./dist/esm/pkg/index.js",
@@ -12,7 +12,7 @@
     "start": "react-scripts start"
   },
   "author": "technarts",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/technarts/react-use-api"
@@ -22,7 +22,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "react",
