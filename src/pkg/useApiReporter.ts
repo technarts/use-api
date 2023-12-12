@@ -24,18 +24,13 @@ export default function useApiReporter<T>(params: Params<T>) {
   const [isStarted, setStarted] = React.useState<boolean[]>(new Array(apiCounsels.length).fill(false));
 
   React.useEffect(() => {
-    let isMounted = true;
-
     apiCounsels.forEach((element, index) => {
       if (element.inFlight && !isStarted[index]) {
         params.start?.();
         setStarted(prevState => {
-          if (isMounted) {
             const newState = [...prevState];
             newState[index] = true;
             return newState;
-          }
-          return prevState;
         });
       } else if (isStarted[index] && !element.inFlight) {
         params.end?.(
@@ -44,12 +39,9 @@ export default function useApiReporter<T>(params: Params<T>) {
           element.fault
         );
         setStarted(prevState => {
-          if (isMounted) {
             const newState = [...prevState];
             newState[index] = false;
             return newState;
-          }
-          return prevState;
         });
       }
     });
