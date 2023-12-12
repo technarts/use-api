@@ -3,7 +3,7 @@ import * as React from "react";
 import { ApiCounsel } from "./types";
 
 type Params<T> = {
-  apiCounsel: ApiCounsel<T>[] | ApiCounsel<T>,
+  apiCounsel: ApiCounsel<T> | ApiCounsel<T>[],
   start?: () => void,
   end?: (
     resp: ApiCounsel<T>["RESP"],
@@ -14,7 +14,7 @@ type Params<T> = {
 
 export default function useApiReporter<T>(params: Params<T>) {
   let apiCounsels: ApiCounsel<T>[];
-  if(Array.isArray(params.apiCounsel)) {
+  if (Array.isArray(params.apiCounsel)) {
     apiCounsels = params.apiCounsel
   }
   else {
@@ -47,5 +47,4 @@ export default function useApiReporter<T>(params: Params<T>) {
     });
   }, [params.apiCounsel, isStarted]);
 }
-
 
