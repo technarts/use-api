@@ -4,6 +4,7 @@ import useApiReporter from "./useApiReporter";
 import {
   Params,
   CallParams,
+  CallResult,
   ApiCounsel
 } from "./types";
 
