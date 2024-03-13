@@ -58,6 +58,9 @@ type CallParams = {
   payload?: any,
 }
 
+// Call result appears as RESP, error, and fault respectively. 
+export type CallResult<T> = [T | null, any, any]
+
 // The return type of useApi:
 type ApiCounsel<T> = {
   RESP: T | null, // Response will be available here when the request successfully completes.
@@ -127,6 +130,21 @@ React.useEffect(() => {
   apiServiceGetter.call({ url: `${apiServiceGetter.url}?id=1` })
 }, [])
 ```
+
+## Accessing the Result
+In some cases, it's crucial to handle the response directly within the API call. After initiating an API request, its result is processed with a promise. The .then() method returns a result, enabling us to execute specific operations based on that result.
+```typescript
+const apiServiceGetter = useApi<any>({ url: "/services", method: "GET" })
+
+React.useEffect(() => {
+  apiServiceGetter.call({ url: apiServiceGetter.url }).then((result) => {
+    const res = result.[0]
+    const err = result.[1]
+    const fault = result.[2]
+  })
+}, [])
+```
+
 
 ## Error Handling
 
