@@ -3,7 +3,8 @@ import * as React from "react";
 import {
   ApiCounsel,
   Params,
-  CallParams
+  CallParams,
+  CallResult
 } from "./types";
 
 export default function useApi<T>(params: Params) {
@@ -21,7 +22,7 @@ export default function useApi<T>(params: Params) {
   const [inFlight, setInFlight] = React.useState(false);
 
   const call = async (callParams?: CallParams) => {
-    let result: [T | null, any, any] = [null, null, null];
+    let result: CallResult<T> = [null, null, null];
     setInFlight(true);
 
     const url = callParams?.url || params.url;
@@ -78,7 +79,7 @@ export default function useApi<T>(params: Params) {
     error,
     fault,
     url: params.url,
-    call: (params: Parameters<typeof call>[0]) => new Promise<[T | null, any, any]>((resolve) => {
+    call: (params: Parameters<typeof call>[0]) => new Promise<CallResult<T>>((resolve) => {
       const result = call(params);
       resolve(result);
     })

@@ -19,11 +19,14 @@ export type CallParams = {
   payload?: any,
 }
 
+// RESP, error, fault respectively
+export type CallResult<T> = [T | null, any, any]
+
 export type ApiCounsel<T> = {
   RESP: T | null,
   inFlight: boolean,
   error: any,
   fault: any,
-  call: (callParams?: CallParams) => Promise<[T | null, any, any]>,
+  call: (callParams?: CallParams) => Promise<CallResult<T>>,
   url: string,
 }
