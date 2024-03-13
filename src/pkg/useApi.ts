@@ -21,6 +21,7 @@ export default function useApi<T>(params: Params) {
   const [inFlight, setInFlight] = React.useState(false);
 
   const call = async (callParams?: CallParams) => {
+    let result: [T | null, any, any] = [null, null, null];
     setInFlight(true);
 
     const url = callParams?.url || params.url;
@@ -52,26 +53,34 @@ export default function useApi<T>(params: Params) {
         setError(null);
         setFault(null);
         setResp(await response.data)
+        result = [await response.data, null, null];
       } else {
         setResp(null);
         setFault(null);
         setError(await response.data)
+        result = [null, await response.data, null];
       }
     } catch (e: any) {
       setResp(null);
       setError(null);
       setFault(e);
+      result = [null, null, e];
     } finally {
       setInFlight(false);
     }
-  }
 
+    return result;
+  }
+  
   return {
     RESP,
     inFlight,
     error,
     fault,
     url: params.url,
-    call,
+    call: (params: Parameters<typeof call>[0]) => new Promise<[T | null, any, any]>((resolve) => {
+      const result = call(params);
+      resolve(result);
+    })
   } as ApiCounsel<T>;
 }

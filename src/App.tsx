@@ -3,9 +3,10 @@ import { useApi } from "./pkg/index"
 import './App.css'
 
 function App() {
-
   const [title, setTitle] = useState('')
+  const [resultResponse, setResultResponse] = useState<[{ status: string; data: number[]; } | null, any, any]>()
   const [getUrl, setGetUrl] = useState('https://dummyjson.com/products/1')
+  const [getWithPromiseUrl, setGetWithPromiseUrl] = useState('https://dummyjson.com/products/1')
   const [postUrl, setPostUrl] = useState('https://dummyjson.com/products/add')
   const [downloadUrl, setDownloadUrl] = useState('https://pbs.twimg.com/profile_images/459271147347906560/ytA20381_400x400.jpeg')
   const [uploadUrl, setUploadUrl] = useState('https://filebin.net/ppkj55e4jturjty7/test.pdf')
@@ -14,6 +15,11 @@ function App() {
 
   const apiGetter = useApi<{ status: string, data: number[] }>({
     url: getUrl,
+    method: "GET"
+  });
+
+  const apiGetterWithPromise = useApi<{ status: string, data: number[] }>({
+    url: getWithPromiseUrl,
     method: "GET"
   });
 
@@ -68,6 +74,32 @@ function App() {
           <code>{JSON.stringify(apiGetter?.inFlight)}</code> <br/>
           <b>url:</b>
           <code>{getUrl}</code> <br/>
+        </div>
+      </div>
+      <div className={"method-section"}>
+        <h3>GET WITH PROMISE</h3>
+        <input
+          type="text"
+          value={getWithPromiseUrl}
+          onChange={(e) => setGetWithPromiseUrl(e.target.value)}
+        />
+        <button onClick={() => apiGetterWithPromise.call().then((r) => {
+          setResultResponse(r)
+        }
+        )}>
+          Send Get Request
+        </button>
+        <div className={"output-section"}>
+          <b>RESP:</b> <br/>
+          <code>{resultResponse?.[0] ?JSON.stringify(resultResponse?.[0]) : ""}</code> <br/>
+          <b>error:</b>
+          <code>{resultResponse?.[1] ?JSON.stringify(resultResponse?.[1]) : ""}</code> <br/>
+          <b>fault:</b>
+          <code>{resultResponse?.[2] ?JSON.stringify(resultResponse?.[2]) : ""}</code> <br/>
+          <b>inFlight:</b>
+          <code>{JSON.stringify(apiGetter?.inFlight)}</code> <br/>
+          <b>url:</b>
+          <code>{getWithPromiseUrl}</code> <br/>
         </div>
       </div>
 

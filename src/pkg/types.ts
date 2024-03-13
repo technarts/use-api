@@ -24,6 +24,6 @@ export type ApiCounsel<T> = {
   inFlight: boolean,
   error: any,
   fault: any,
-  call: (callParams?: CallParams) => void,
+  call: (callParams?: CallParams) => Promise<[T | null, any, any]>,
   url: string,
 }
