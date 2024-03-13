@@ -1,6 +1,6 @@
 {
   "name": "@technarts/react-use-api",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "React hooks for api call life cycle management.",
   "main": "./dist/cjs/pkg/index.js",
   "module": "./dist/esm/pkg/index.js",
