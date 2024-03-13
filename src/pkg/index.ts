@@ -8,4 +8,4 @@ import {
 } from "./types";
 
 export { useApi, useApiReporter }
-export type { Params, CallParams, ApiCounsel }
+export type { Params, CallParams, CallResult, ApiCounsel }
