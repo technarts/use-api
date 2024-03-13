@@ -18,16 +18,13 @@ import { useApi } from "@technarts/react-use-api";
 // Get an ApiCounsel by which you can make calls and manage responses:
 const apiGetter = useApi<{ status: string, data: number[] }>({ url: "your/url/here", method: "GET" });
 
-// Make the call
 React.useEffect(() => {
-  apiGetter.call();
+  apiGetter.call().then(([resp, err, fault]) => {
+    if (resp) {
+      // Do what is needed with the response.
+    }
+  });
 }, [])
-
-React.useEffect(() => {
-  if (apiGetter.RESP) {
-    // Do what is needed with the response.
-  }
-}, [apiGetter.RESP])
 ```
 
 ## Types
@@ -58,7 +55,8 @@ type CallParams = {
   payload?: any,
 }
 
-// Call result appears as RESP, error, and fault respectively. 
+// Return type of the call method of ApiCounsel.
+// Returned values are [RESP, error, fault] respectively. 
 export type CallResult<T> = [T | null, any, any]
 
 // The return type of useApi:
@@ -67,7 +65,7 @@ type ApiCounsel<T> = {
   inFlight: boolean, // Whether the request is pending or not.
   error: any, // HTTP Response status was anything outside of [200, 299], such as HTTP 404.
   fault: any, // Server didn't respond.
-  call: (callParams?: CallParams) => void, // Request trigger.
+  call: (callParams?: CallParams) => Promise<CallResult<T>>, // Request trigger.
   url: string, // The same url as what is passed to useApi inside params. Handy when apiCounsel is passed to another React component where the url is no longer in the scope.
 }
 ```
@@ -131,26 +129,35 @@ React.useEffect(() => {
 }, [])
 ```
 
-## Accessing the Result
-In some cases, it's crucial to handle the response directly within the API call. After initiating an API request, its result is processed with a promise. The .then() method returns a result, enabling us to execute specific operations based on that result.
+## Handling the Result Within Context
+
+Handling the response directly within the context where the API call is made:
+
 ```typescript
-const apiServiceGetter = useApi<any>({ url: "/services", method: "GET" })
+const apiGetter = useApi<any>({ url: "...", method: "GET" })
 
 React.useEffect(() => {
-  apiServiceGetter.call({ url: apiServiceGetter.url }).then((result) => {
-    const res = result.[0]
-    const err = result.[1]
-    const fault = result.[2]
+  apiGetter.call().then((result) => {
+    const [resp, err, fault] = result // result is of type CallResult.
+    // Rest of the code...
   })
 }, [])
 ```
 
+## Handling the Result Outside of the Context
 
-## Error Handling
-
+Result can be handled outside of the context where the API call is made, e.g. in a `useEffect`.
 `RESP`, `error` and `fault` in type `ApiCounsel` are mutually exclusive:
 
 ```typescript
+const apiCounsel = useApi<any>({ url: "...", method: "GET" });
+
+// Make the call
+React.useEffect(() => {
+  apiCounsel.call();
+}, [])
+
+// Listen for the result
 React.useEffect(() => {
   if (apiCounsel.fault)
     // No response at all.
@@ -161,7 +168,7 @@ React.useEffect(() => {
 }, [apiCounsel.RESP, apiCounsel.error, apiCounsel.fault])
 ```
 
-Please check `useApiReporter` for a more convenient way of handling the result.
+Please check `useApiReporter` for an alternative way of handling the result.
 
 ## Checking Request's Condition
 
@@ -175,7 +182,7 @@ React.useEffect(() => {
 }, [apiCounsel.inFlight])
 ```
 
-Again, `useApiReporter`'s `end` callback can be used for chaining requests one after another.
+Also, `useApiReporter`'s `end` callback can be used for chaining requests one after another.
 
 ## `useApiReporter` Hook
 
