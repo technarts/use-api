@@ -22,7 +22,7 @@ export default function useApi<T>(params: Params) {
   const [inFlight, setInFlight] = React.useState(false);
 
   const call = async (callParams?: CallParams) => {
-    let result: CallResult<T> = [null, null, null];
+    const result: CallResult<T> = { resp: null, error: null, fault: null };
     setInFlight(true);
 
     const url = callParams?.url || params.url;
@@ -50,24 +50,19 @@ export default function useApi<T>(params: Params) {
           data: params.method === "DOWNLOAD" ? r.blob() : r.json()
         }));
 
-      if (response.ok) {
-        setError(null);
-        setFault(null);
-        setResp(await response.data)
-        result = [await response.data, null, null];
-      } else {
-        setResp(null);
-        setFault(null);
-        setError(await response.data)
-        result = [null, await response.data, null];
-      }
+      if (response.ok)
+        result.resp = await response.data;
+      else
+        result.error = await response.data;
     } catch (e: any) {
-      setResp(null);
-      setError(null);
-      setFault(e);
-      result = [null, null, e];
+      result.resp = null;
+      result.error = null;
+      result.fault = e;
     } finally {
       setInFlight(false);
+      setResp(result.resp);
+      setError(result.error);
+      setFault(result.fault);
     }
 
     return result;
@@ -85,3 +80,4 @@ export default function useApi<T>(params: Params) {
     })
   } as ApiCounsel<T>;
 }
+

@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import { useApi } from "./pkg/index"
+import type { CallResult } from "./pkg/index";
 import './App.css'
 
 function App() {
   const [title, setTitle] = useState('')
-  const [resultResponse, setResultResponse] = useState<[{ status: string; data: number[]; } | null, any, any]>()
+  const [resultResponse, setResultResponse] = useState<CallResult<{ status: string; data: number[]; } | null>>()
   const [getUrl, setGetUrl] = useState('https://dummyjson.com/products/1')
   const [getWithPromiseUrl, setGetWithPromiseUrl] = useState('https://dummyjson.com/products/1')
   const [postUrl, setPostUrl] = useState('https://dummyjson.com/products/add')
