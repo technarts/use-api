@@ -19,7 +19,7 @@ import { useApi } from "@technarts/react-use-api";
 const apiGetter = useApi<{ status: string, data: number[] }>({ url: "your/url/here", method: "GET" });
 
 React.useEffect(() => {
-  apiGetter.call().then(([resp, err, fault]) => {
+  apiGetter.call().then(({ resp, err, fault }) => {
     if (resp) {
       // Do what is needed with the response.
     }
@@ -55,9 +55,12 @@ type CallParams = {
   payload?: any,
 }
 
-// Return type of the call method of ApiCounsel.
-// Returned values are [RESP, error, fault] respectively. 
-export type CallResult<T> = [T | null, any, any]
+// Effective return type of the call method of ApiCounsel:
+export type CallResult<T> = {
+  resp: T | null,
+  error: any,
+  fault: any,
+}
 
 // The return type of useApi:
 type ApiCounsel<T> = {
@@ -138,13 +141,13 @@ const apiGetter = useApi<any>({ url: "...", method: "GET" })
 
 React.useEffect(() => {
   apiGetter.call().then((result) => {
-    const [resp, err, fault] = result // result is of type CallResult.
+    const { resp, err, fault } = result // result is of type CallResult.
     // Rest of the code...
   })
 }, [])
 ```
 
-## Handling the Result Outside of the Context
+## Handling the Result Outside of Context
 
 Result can be handled outside of the context where the API call is made, e.g. in a `useEffect`.
 `RESP`, `error` and `fault` in type `ApiCounsel` are mutually exclusive:
