@@ -189,7 +189,8 @@ Also, `useApiReporter`'s `end` callback can be used for chaining requests one af
 
 ## `useApiReporter` Hook
 
-This hook can be used for making callbacks when a request started and/or ended:
+This hook can be used for making callbacks when a request started and/or ended.
+Convenient when an ApiCounsel is called in numerous places but the necessary callbacks are the same.
 
 ```typescript
 // type T = { ... }
