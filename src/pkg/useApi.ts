@@ -60,7 +60,6 @@ export default function useApi<T>(params: Params) {
       result.error = null;
       result.fault = e;
     } finally {
-      console.log("inFlight value before async:", inFlight)
       setResp(result.resp);
       setError(result.error);
       setFault(result.fault);
