@@ -21,9 +21,10 @@ export default function useApi<T>(params: Params) {
   // Is there an ongoing request?:
   const [inFlight, setInFlight] = React.useState(false);
 
+
   const call = async (callParams?: CallParams) => {
-    const result: CallResult<T> = { resp: null, error: null, fault: null };
     setInFlight(true);
+    const result: CallResult<T> = { resp: null, error: null, fault: null };
 
     const url = callParams?.url || params.url;
     const headers = callParams?.headers || params.headers;
@@ -47,7 +48,7 @@ export default function useApi<T>(params: Params) {
         .then(r => params.responseGuard?.(r, { url, headers, payload: callParams?.payload }) || Promise.resolve(r))
         .then(r => ({
           ok: r.ok,
-          data: params.method === "DOWNLOAD" && r.ok ? r.blob() : r.json()
+          data: params.method === "DOWNLOAD" && r.ok ? r.blob() : r.json(),
         }));
 
       if (response.ok)
@@ -59,15 +60,19 @@ export default function useApi<T>(params: Params) {
       result.error = null;
       result.fault = e;
     } finally {
-      setInFlight(false);
+      console.log("inFlight value before async:", inFlight)
       setResp(result.resp);
       setError(result.error);
       setFault(result.fault);
+      // pushes setInFlight(false) to the task queue, making sure it gets executed after
+      // callstack is empty with minimum possible delay
+      setTimeout(() => {
+        setInFlight(false);
+      }, 0);
     }
 
     return result;
   }
-  
   return {
     RESP,
     inFlight,
@@ -77,7 +82,7 @@ export default function useApi<T>(params: Params) {
     call: (params: Parameters<typeof call>[0]) => new Promise<CallResult<T>>((resolve) => {
       const result = call(params);
       resolve(result);
-    })
+    }),
   } as ApiCounsel<T>;
 }
 
